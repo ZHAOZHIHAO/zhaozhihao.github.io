@@ -1,0 +1,124 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{setspace}
+\usepackage{mathrsfs}
+\begin{document}
+\begin{spacing}{1.5}
+\section{}
+Row picture, column picture\\
+Example: For\\
+	$2x-y=0\\
+	-x+2y=3$ \\
+Row picture is that draw $2x-y=0, -x+2y=3$ on coordinate and find a point satisfying the two equations. That point is the solution.\\
+Column picture is to solve $x(2, -1)^T + y(-1, 2)^T = (0, 3)^T$. This means combine two vectors($(2, -1), (-1, 2)$) to get the final $(0,3)$ point. In addition, $x(2, -1)^T + y(-1, 2)^T$ is called {\bfseries linear combination} of columns. In column picture, for Ax=b, in view of x, every row of A makes a transform on x, resulting every new dimension value which assemble b; in view of A, combination of all its columns weighted by x, resulting b. \\
+So when calculate $Ax$, we can use row picture or column picture. 
+\section{}
+$$
+\begin{bmatrix}
+0 & 1 \\
+1 & 0 
+\end{bmatrix}
+\begin{bmatrix}
+a & b\\
+c & d
+\end{bmatrix}
+=
+\begin{bmatrix}
+c & d \\
+a & b
+\end{bmatrix}
+$$ \\
+You can get the left 0, 1, 1, 0 matrix by imagining column picture.
+The result re-permutes the origin in row. If you want to re-permute it in column, write the 0, 1, 1, 0 matrix at the right-hand side of $[a, b; c, d]$.
+\section{}
+Part 1. \\
+There are four ways to calculate $AB=C$. \\
+1. The commonest way is $C_{ij} = \sum A_{ik}B_{kj}$. \\
+2. But you can also focus on one column of B or C at one time. In this view, $C_{i-col} = A*B_{i-col}$. It's exactly column picture in section 1. So all columns in A are combined, weighted by one column of B at one time, resulting many columns, and these columns assemble C. \\
+3. The third way is to focus on one row of A or C at one time. In this view, $A_{i-row} = A_{i-row} * B$. You can think it with imagining transpose of $C_{i-col} = A*B_{i-col}$ in the second way. \\
+4. $C = \sum A_{i-col}*B_{i-row}$, the last way. I think this is the most magical way:) \\
+In addition, you can also use trick of block.\\ 
+\\ Part 2. \\
+Inverse: $AA^{-1}=A^{-1}A=I$. \\
+\\ When is a matrix A invertible? \\
+An invertible matrix is called {\bfseries non-singular/invertible}. From the first term, you can calculate A's determinant. If it's 0, A is singular. \\
+But there is also a magical way, if you can find a vector $x \neq 0$, satisfies $Ax=0$, A is singular. Why? If $Ax=0$, $A^{-1}Ax=x=0$, but $x \neq 0$. Why it's magical? Imagine when you can get $x \neq 0$, $Ax=0$? By column picture, it means that we can get at least one (minus) column of A by combining all of the rest columns. That's called {\bfseries linear dependence}! \\ 
+\\ When A is invertible, how to get its inverse? \\
+Concatenate A and I, write as $[A \quad I]$, and transform A to I with elementary transformation. The result is $[I \quad A^{-1}]$. This is called {\bfseries Gaussian-Jordan elimination}. Why does it work? If $A \rightarrow I$, the $\rightarrow$ must be multiplied by $A^{-1}$. So $I \rightarrow \, ?$, the ? must be $I*A^{-1}=A^{-1}$. Of course, you can use other ways to get $A^{-1}$, but I think this is the easiest way.
+\section{}
+$A = LU = LDU$, here L is upper, D is middle, U is upper. \\
+Specially, how many operations do we need to get $A_{n*n}=LU$?\\
+We can use elementary transformation to transform A to U, the elementary matrix is $L^{-1}$. To get U, first just eliminate the first column(except for the first row), so we need about $n^2$ operations(take multiply and add as one operation and let the first row also operate on itself). Then only focus on the sub-matrix $A_{(n-1)*(n-1)}$, here we need about $(n-1)^2$ operations. The final number is $\sum_{1}^{n} i^2 = (n * (n + 1) * (2n + 1)) / 6$, simply taking it as $n^3/3$. \\
+\\ How many operations do we need to get $A_{n*n}=LDU$? \\
+We can get $A=LU^{'}$ first, and then get $U^{'}=DU$. The first step take about $n^3/3$ operations, and the second step take $n(n+1)/2$ operations. You can get this number similar to $A=LU^{'}$ step.
+\section{}
+Part 1. Permutation matrix \\
+Permutation matrix is identity matrix I with reordering rows, including I itself. \\
+a. There are n! permutation matrixes for $I_{n*n}$. \\
+b. For Permutation matrix P, $P^{-1}=P^{T}$. \\
+c. $P^{-1}=P^{T}$ is also permutation matrix. \\
+\\ Part 2. Transpose \\
+For $A=RR^T$, A is symmetric, $A=A^T$. Because $A^T=(RR^T)^T=RR^T=A$. \\
+\\ Part 3. Vector space, Column space, Vector subspace \\
+A vector space is defined as result of addition of any two vectors in this space or multiply by a scalar still lies in this space. \\
+Column space is defined as the set of all possible linear combinations of a matrix's column vectors. \\
+A subspace(vector subspace) is a subspace of vector space, and it also is a vector space(vector space inside vector space). For example, subspace of $R^3$ is set of $R^3$, any plane $R^2$ through origin, any line $R$ through origin. You can see that any subspace must through origin, because we can multiply a vector in the space by 0, resulting origin. \\
+You can see that a vector space or a subspace must be $R^n$. It can't be part of $R^n$.
+\section{}
+Part 1. \\
+Intersection of subspaces S and T, $S \cap T$, is also a subspace, because a subspace must be $R^n$, so the intersection is $min(S, T)$. \\
+\\ Part 2. Nullspace \\
+For $Ax=b$, we can get $\{x|Ax=b\}$, but is it a vector space? \\
+When b is not 0, it's not a vector space. Because x can't be 0, and a vector space must contains 0. In detail, $\{x|Ax=b\}$ is a point, line, plate or space that doesn't go through origin. For example, you get $x(1, 0, 0)^T+y(0, 1, 0)^T+z(0, 0, 0)^T=(1, 1, 0)$ in column picture. The solution is $(1, 1, n)$, n can be any value, but the solution always can't be $(0, 0, 0)^T$.\\
+But when b is 0, it's a vector space. Why? Suppose w, v are two solutions of $Ax=b$, $A(aw+bv)=a(Aw)+b(Av)=0$, so $aw+bv$ is also in $\{x\}$.(a,b are scalars, w,v are vectors). Specially, for A, $\{x|Ax=0\}$ is called A's {\bfseries nullspace, $N(A)$}.
+\section{}
+To get nullspace of A, (i) Use {\bfseries Reduced Row-Echelon Form(RREF)} and reorder columns to get $[I, F; 0, 0]$. (ii) take inverse-reorder of (i) on rows of $[-F, I]^T$. Nullspace is column space of  $[-F, I]^T$. \\
+\\Explanation and example \\
+For $Ax=0$, take three steps. $\{x\}$ is nullspace.
+$$
+\begin{bmatrix}
+1 & 2 & 2 & 2 \\
+2 & 4 & 6 & 8 \\ 
+3 & 6 & 8 & 10 
+\end{bmatrix}
+\xrightarrow[change]{\{x\}\, doesn't}
+\begin{bmatrix}
+1 & 2 & 0 & -2 \\
+0 & 0 & 1 & 2 \\ 
+0 & 0 & 0 & 0
+\end{bmatrix}
+\xrightarrow[changes]{\{x\}}
+\begin{bmatrix}
+1 & 0 & 2 & -2 \\
+0 & 1 & 0 & 2 \\ 
+0 & 0 & 0 & 0
+\end{bmatrix}
+=
+\begin{bmatrix}
+	I & F \\
+	0 & 0
+\end{bmatrix}
+$$
+The first arrow doesn't change $\{x\}$, because we only take elementary transformation on rows, $EAx=E0=0=Ax$(see section 2 if you forget it should be $AEx$ or $EAx$). This process is called {\bfseries Reduced Row-Echelon Form, RREF} at matrix view. \\
+The second arrow changes $\{x\}$, because we reordered the columns. In view of elementary transformation on columns, $AEx \neq (0=Ax)$. In another way, think about column picture, if we reorder the columns, we have to inverse-reorder the dimensions(rows) of x to get correct solution. \\
+If we rewrite the third matrix in blocks, as the final matrix above, we can immediately give some solutions of $A^{third}x=0$. They are $[-F, I]^T$. Note here $[-F, I]^T$ is size of 4*2 because F and I are both size of 2*2. So reordering the rows(here 2,3) of $[-F, I]^T$ gives us two {\bfseries special solutions} of $Ax=0$. And magically, the nullspace is just linear combination of the columns of $[-F, I]^T$, i.e., column space. \\
+\\Why the column space of $[-F, I]^T$ is nullspace of A? \\
+See the second matrix, we know here are four variables, but when we give some values to any two variables, the left two are determined. So we only need to choose two variables, and assign all possible values to the two variables, we get nullspace. That's exactly column space of $[-F, I]^T$ with choosing the two variables as dimensions of column of I. The chose variables are called {\bfseries free variables}.
+\section{}
+Part 1. Get $\{x|Ax=b\}$ \\
+$\{x|Ax=b\}$ can be get through an arbitrary solution(formally, {\bfseries particular solution}) of $Ax=b$ plus every vector in nullspace of A.\\
+Explanation:\\
+For given $x^p$ and an arbitrary $x^q$, which are both in $\{x|Ax=b\}$, $x^q - x^p$ is a vector $v$ lying in $N(A)$, because $A(x^q - x^p) = Ax^q - Ax^p= b - b = 0$. So an arbitrary $x^q$ in $\{x|Ax=b\}$ can be rewritten as $x^p+v, v \in N(A)$, and in this process, you would not get more solutions($x^p+v$ is not a vector in $\{x|Ax=b\}$), because $A(x^p + v) = Ax^p + Ax^v= b + 0 = b$. \\
+You can get that $N(A)$ and $\{x|Ax=b\}$ are two parallel planes from the explanation above. \\
+\\ Part 2. How many $x$ exist for $A_{m*n}x=b$? $r=rank(A)$ 
+\\ a. If $r = n < m$, there may be 0 or 1 solution.
+\\ b. If $r = m < n$, there may be 1 or infinite solutions.
+\\ c. If $r < m, r < n$, there may be 0 or infinite solutions.
+\\\\ Explanation:
+\\In summary:
+\\First, using rref, convert A in $Ax=b$ to a combination of $I, F, 0$, and then think the equation by column picture, you will get the answer quickly.
+\\\\In detail:
+\\ When $r=n<m$, take rref on both side of $Ax=b$, you get $\hat A x = \hat b$, rewrite $\hat A$ in blocks $\hat A=[I, 0]^T$. For $[I, 0]^Tx=\hat b$, think about column picture, there may be 1 or 0 solution, which depends on the positions of 0s in b. When $r=m<n$, $\hat A = [I, F]$, the number of solutions depends on whether $b = 0$. Here F means free, as all columns in F can be a linear combination of A, and so $r(A) < n$. You may be wondering why $\hat A = [I, F]$, not $[I, 0]$. That's because rref only allow us to do operations on rows, not columns. When $r < m, r < n$, $\hat A=[I, F;0, 0]$, it's a combination of the two situations above. I believe you can derivate the answer yourself.\\
+\end{spacing}
+\end{document}
