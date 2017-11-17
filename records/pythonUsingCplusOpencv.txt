@@ -31,7 +31,7 @@ opencv_imgproc some_other_libraries
    Note here:
       The install command will install the generated library to directory related to default python version. For example, 
     your default python is /usr/bin/python3.5, but you want to use python in anaconda/python3. So you can simply copy the
-    generated *.so file to $PATH/anaconda3/lib
+    generated *.so file to $PATH/anaconda3/lib.
 
 4. The generated library is "pbcvt.cpython-35m-x86_64-linux-gnu.so" for me. You can also modify project("pbcvt") in
    CMakeLists.txt to get other filename.
