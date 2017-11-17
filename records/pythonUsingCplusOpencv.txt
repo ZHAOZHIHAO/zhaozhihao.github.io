@@ -24,8 +24,7 @@ Steps
      functions(I don't know why ${OpenCV_LIBS} doesn't include all opencv libraries). For example, cv::resize function is 
      reliazed in opencv_imgproc.so(you can use 'nm' command to see where your desired function is realized.) So you need 
      to add opencv_imgproc to $pyboostcvconverter/CMakeLists.txt, for example:
-	target_link_libraries(${PROJECT_NAME}
- 
+	target_link_libraries(${PROJECT_NAME} 
 opencv_imgproc some_other_libraries
 )
    $pyboostcvconverter/build: (sudo) make install
