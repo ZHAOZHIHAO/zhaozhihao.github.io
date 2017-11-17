@@ -1,0 +1,41 @@
+Materials
+1. https://stackoverflow.com/questions/12957492/writing-python-bindings-for-c-code-that-use-opencv
+2. https://github.com/Algomorph/pyboostcvconverter
+
+Guide
+Before you start the steps, read materials.1 to understand how it works.
+
+Steps
+1. First, write functions with OpenCV and C++.
+
+2. a. Clone the code of https://github.com/Algomorph/pyboostcvconverter.
+   b. You can modify your *.cpp to *.hpp and put it in include directory. 
+      You can also do whatever you want, the key is that let your desired function being included in src/python_module.cpp
+   c. i)  Modify function of PyObject *dot(PyObject *left, PyObject *right) in src/python_module.cpp.
+          Look at this function, and you will know what you should do to realize your desire.
+      ii) Modify def("dot", dot) in src/python_module.cpp. The first "dot" is the function name to be used in Python. The 
+	  second dot is the function name of PyObject *dot(Of course you can modify it).
+
+3. $pyboostcvconverter: mkdir build & cd build
+   $pyboostcvconverter/build: cmake ..
+   $pyboostcvconverter/build: make
+   Note here: 
+       If you did some complicated operations with OpenCV and C++, you need to also link libraries that implement these 
+     functions(I don't know why ${OpenCV_LIBS} doesn't include all opencv libraries). For example, cv::resize function is 
+     reliazed in opencv_imgproc.so(you can use 'nm' command to see where your desired function is realized.) So you need 
+     to add opencv_imgproc to $pyboostcvconverter/CMakeLists.txt, for example:
+	target_link_libraries(${PROJECT_NAME} 
+opencv_imgproc some_other_libraries
+)
+   $pyboostcvconverter/build: (sudo) make install
+   Note here:
+      The install command will install the generated library to directory related to default python version. For example, 
+    your default python is /usr/bin/python3.5, but you want to use python in anaconda/python3. So you can simply copy the
+    generated *.so file to $PATH/anaconda3/lib
+
+4. The generated library is "pbcvt.cpython-35m-x86_64-linux-gnu.so" for me. You can also modify project("pbcvt") in
+   CMakeLists.txt to get other filename.
+   To use the function in a Python file, simply "import pbcvt"(for our example) and write "result = dot(a, b)" (for the 
+   dot example function above).
+   
+
