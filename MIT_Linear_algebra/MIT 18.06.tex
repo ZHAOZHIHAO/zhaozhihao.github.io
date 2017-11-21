@@ -3,9 +3,11 @@
 \usepackage{amssymb}
 \usepackage{setspace}
 \usepackage{mathrsfs}
+\usepackage{ulem}
 \begin{document}
 \begin{spacing}{1.5}
 
+You can also find the official video lecture summary on https://ocw.mit.edu/courses/mathematics/18-06sc-linear-algebra-fall-2011/ax-b-and-the-four-subspaces/the-geometry-of-linear-equations/  \qquad See the left navigation bar on this page, you will get all summaries.
 
 \section{}
 Row picture, column picture\\
@@ -153,5 +155,127 @@ It's nice but, why? Think about $Ax=0$, if rank(A) = m, it's easy to show this r
 
 
 \section{}
+A matrix $A_{m*n}$ has four subspaces, column space $C(A)$, nullspace  $N(A)$, rowspace $C(A^T)$, nullspace of $A^T$ $N(A^T)$(also called {\bfseries left nullspace}). \\
+Dimensions of $C(A), C(A^T)$ are both $r(A)$. Dimension of $N(A), N(A^T)$ are $n-r(A), m-r(A)$. \\
+All above make sense if you understand all previous sections:)\\
+\\How to get $C(A), N(A), C(A^T), N(A^T)$?\\
+First of all, to get a space, you just need to find one of its basis.\\
+For $C(A^T)$, take rref, the non-zero rows are one basis.\\
+For $C(A)$, take reduction on columns, the non-zero columns are one basis.\\
+For $N(A)$ and $N(A^T)$, see section 7. This course also taught a other way to get $N(A)$ and $N(A^T)$. But I think it's more complicated compared to section 7 as we need to write out an elementary matrix.\\
+
+
+\section{}
+Part 1. Matrix space, solution space\\
+If we define a space as result of addition of any two elements in this space or multiply by a scalar still lies in this space, we can get matrix space and solution space. Similarly, we can also get basis and dimension of these spaces. \\
+For example, for all 3*3 symmetric matrix, it's a (matrix) space. One kind of basis is as below, and its dimension is 6 as there are 3 free variables.
+$$
+\begin{bmatrix}
+	1 & 0 & 0 \\
+	0 & 0 & 0 \\ 
+	0 & 0 & 0
+\end{bmatrix}
+,
+\begin{bmatrix}
+	0 & 1 & 0 \\
+	0 & 0 & 0 \\ 
+	0 & 0 & 0
+\end{bmatrix}
+,
+\begin{bmatrix}
+	0 & 0 & 1 \\
+	0 & 0 & 0 \\ 
+	0 & 0 & 0
+\end{bmatrix}
+...
+\begin{bmatrix}
+	0 & 0 & 0 \\
+	0 & 0 & 0 \\ 
+	0 & 0 & 1
+\end{bmatrix}
+$$
+For example, all solutions of $\frac{d^2y}{d^2x}+y=0$ is a (solution) space. One kind of basis is $\cos x$ and $\sin x$, and its dimension is 2.\\
+For example, the subset of M containing all rank 4 matrices is not a space, even if we include the zero matrix, because the sum of two rank 4 matrices may not have rank 4.\\
+\\ Part 2. Rank 1 matrices \\
+For a matrix A with rank(A) = 1, it can be decomposed as $A = A_{col1} A_{row1}$.\\
+For example,
+$$
+\begin{bmatrix}
+1 & 4 & 5 \\
+2 & 8 & 10
+\end{bmatrix}
+= 
+\begin{bmatrix}
+1 \\
+2 
+\end{bmatrix}
+\begin{bmatrix}
+1 & 4 & 5\\
+\end{bmatrix}
+$$
+\\Part 3. Graph \\
+In this class, a {\bfseries graph} G is a collection of nodes joined by edges: 
+$G = \{nodes, edges\}$. 
+
+
+
+\section{}
+Application of graph.\\
+
+
+\section{}
+Review and exam.\\
+
+
+\section{}
+$||x||=x^Tx$, this is useful when you want to take some operation on $x$, for example, derivation.\\
+\\Part 1. Orthogonal space \\
+Subspace S is {\bfseries orthogonal($\perp$)} to subspace T is defined as every vector in S is orthogonal to every vector in T. This is the same as two plane are orthogonal, which we learned in high school. Note that here S and T can have different dimension.\\
+\\For a matrix A, its row space is orthogonal to its nullspace. \\
+Explanation and example: \\
+For $Ax=0$ like this,\\
+$$
+\begin{bmatrix}
+1 & 2 & 2 & 2 \\
+2 & 4 & 6 & 8 \\ 
+3 & 6 & 8 & 10 
+\end{bmatrix}
+\begin{bmatrix}
+x_1 \\
+x_2 \\
+x_3 \\
+x_4
+\end{bmatrix}
+=
+\begin{bmatrix}
+0 \\
+0 \\
+0 \\
+0 \\
+\end{bmatrix}
+$$
+Immediately, $[1, 2, 2, 2] [x_1, x_2, x_3, x_4]^T = [2, 4, 6, 8] [x_1, x_2, x_3, x_4]^T = [3, 6, 8, 10] [x_1, x_2, x_3, x_4]^T = 0$. And this can easily generalize to the two whole space.\\
+\\Furthermore,  row space and nullspace are not only orthogonal, but also {\bfseries complementary} in $R^n$. Complementary here means that nullspace contains all vectors that $\perp$ row space, and vice versa.\\
+\\Part 2. $A^TAx=A^Tb$\\
+Sometimes there is no solution for $Ax=b$, but we still want to get a solution. So we calculate $A^TAx=A^Tb$. More detail is in next section.\\
+$N(A^TA)=N(A)$, because $Ax=0 \leftrightarrow A^TAx=A^T0 \leftrightarrow A^TAx=0$.
+So $A^TA$ is invertible if $N(A)$ only contains zero vector, i.e., columns of A are independent.\\
+
+
+\section{}
+Part 1. Why is it $A^TAx=A^Tb$ in 14.2? \\
+In summary \\
+First, in $Ax=b$, as it has no solution, replace $b$ with $p$(the vector in $C(A)$ closest to b), get $Ax=p$. Second, column vectors in $A$ $\perp$ $(b-Ax)$, so $A^T(b-Ax)=0$, $A^TAx=A^Tb$.\\
+\\ In detail \\
+Okay, suppose size of $A, x, b$ are $3*2, 2*1, 3*1$, columns of A are $a_1, a_2$. $Ax=b$ has no solution means $b$ is not in column space of $A, C(A)$. So we replace $b$ with a vector $p$(projection) in $C(A)$ closest to $b$. Now we have $Ax=p$ and it has a solution. What's more, we know that $a_1, a_2 \perp (b-p)$, because only in this way p is a vector in $C(A)$ closest to b. So $a_1^T(b-p) = a_2^T(b-p) = a_1^T(b-Ax) = a_2^T(b-Ax) = 0$, write it in matrix $A^T(b-Ax)=0$, i.e., $A^TAx = A^Tb$. \\
+\\Note \\
+a. We never explicitly write out $p$ above. We have $Ax=p$, but we don't know $x$ and $p$. We join $Ax=p$ and the orthogonal case to calculate x and p.\\
+b. If you think $p$ is $A^Tb$, you are wrong. Because $p=Ax \neq (A^Tb=A^TAx)$. We need to calculate $x$ first to get $p$.\\
+c. If you think $A^TAx = A^Tb$ then $Ax = b$, you are wrong again. Because to get the latter equation, you need to left multiply $(A^T)^{-1}$ at both side of the former equation. But $(A^T)^{-1}$ doesn't exist. \\
+\\Part 2. Projection matrix\\
+In part 1, we project $b$ to $p$ with a {\bfseries projection matrix P}. $P=A(A^TA)^{-1}A^T$ in part 1 and $P=P^T$, $P=P^2=P^n$ for this P. You can verify it easily. \\
+\\Part 2. Application of $A^TAx=A^Tb$, least mean square error\\
+If there is noise in our data, when apply all points to a fitting function and write all these fitting equations with $Ax=b$, it has no solution. But $A^TAx=A^Tb$ has a solution, what's more, it's the best solution with least mean square error. Magical! More detail and explanation is in next section.\\
+\sout{(Redundant)Here $x$ is the variables of our hyperplane, $A$ is coefficient of the fitting function, $b$ is function value. For example, For $Ax=b$ and fitting function $y=ax_1+b_1$, x is $x_1$, A is a and $b_1$, b is y. }\par
 \end{spacing}
 \end{document}
