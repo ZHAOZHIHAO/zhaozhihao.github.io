@@ -274,7 +274,7 @@ b. If you think $p$ is $A^Tb$, you are wrong. Because $p=Ax \neq (A^Tb=A^TAx)$. 
 c. If you think $A^TAx = A^Tb$ then $Ax = b$, you are wrong again. Because to get the latter equation, you need to left multiply $(A^T)^{-1}$ at both side of the former equation. But $(A^T)^{-1}$ doesn't exist. \\
 \\Part 2. Projection matrix\\
 In part 1, we project $b$ to $p$ with a {\bfseries projection matrix P}. $P=A(A^TA)^{-1}A^T$ in part 1 and $P=P^T$, $P=P^2=P^n$ for this P. You can verify it easily. \\
-\\Part 2. Application of $A^TAx=A^Tb$, least mean square error\\
+\\Part 3. Application of $A^TAx=A^Tb$, least mean square error\\
 If there is noise in our data, when apply all points to a fitting function and write all these fitting equations with $Ax=b$, it has no solution. But $A^TAx=A^Tb$ has a solution, what's more, it's the best solution with least mean square error. Magical! More detail and explanation is in next section.\\
 \sout{(Redundant)Here $x$ is the variables of our hyperplane, $A$ is coefficient of the fitting function, $b$ is function value. For example, For $Ax=b$ and fitting function $y=ax_1+b_1$, x is $x_1$, A is a and $b_1$, b is y. }\par
 \end{spacing}
