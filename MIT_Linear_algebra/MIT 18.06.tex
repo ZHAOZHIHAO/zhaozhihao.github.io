@@ -4,6 +4,8 @@
 \usepackage{setspace}
 \usepackage{mathrsfs}
 \usepackage{ulem}
+\usepackage{graphicx}
+\graphicspath{ {images/} }
 \begin{document}
 \begin{spacing}{1.5}
 
@@ -526,7 +528,7 @@ In addition, it's also easy to calculate $u_{t+100}$ that $u_{t+100}=A^{100}u_t=
 
 a. If a real symmetric matrix has no repeated eigenvalue, its eigenvector are perpendicular.
 
-b. If eigenvectors are not perpendicular, we can use {\bfseries Singular-value decomposition(SVD)}. It's the generalization of the eigendecomposition.
+b. If eigenvectors are not perpendicular, we can use {\bfseries Singular-value decomposition(SVD)}. It's the generalization of the eigendecomposition, see section 29.
 
 
 \section{}
@@ -577,10 +579,9 @@ Symmetric matrix is very good because its properties:
 This also holds true for some special complex matrices, {\bfseries Hermitian matrix}. Hermitian matrix is defined as $A=\bar A^T$, or $A=A^H$, $A=A^*$.
 
 Here we only prove its eigenvalues are real numbers. On one hand, $Ax=\lambda x \Rightarrow \bar x^T Ax=\lambda \bar x^T x$; on the other hand, $Ax=\lambda x \Rightarrow$(from 21.9)$ A\bar x=\bar\lambda \bar x \Rightarrow \bar x^T A^T=\bar\lambda \bar x^T \Rightarrow \bar x^T A^T x=\bar\lambda \bar x^T x \Rightarrow \bar x^T A x=\bar\lambda \bar x^T x$. From both sides, $\lambda \bar x^T x = \bar\lambda \bar x^T x$, then because eigenvector isn't zero, $\lambda = \bar\lambda$, i.e., $\lambda$ is real.
+\\\\Part 2. Positive definite matrix
 
-
-
-Part 2. Positive definite matrix
+Why do we care about positive definite matrix will be given in section 27.
 
 A symmetric $n * n$ real matrix(or a Hermitian matrix) $M$ is said to be positive definite(or semi-definite) if the scalar $z^T Mz$ is positive(or larger or equal to 0) for every non-zero column vector $z$ of $n$ real numbers. Similarly, we have negative definite(semi-definite).
 
@@ -596,9 +597,9 @@ c. all its sub-determinants are positive, called {\bfseries Sylvester's criterio
 \section{}
 Part 1. Operations on complex vectors and matrices
 
-For real vectors $x$, the inner product is defined as $x^Tx$, which means square of its length. For complex vector $z=1+i$, the length is $\sqrt{1^2+1^2}$, which should be defined as $z^Hz$. Because what we want is the coefficient of real and imaginary part, which corresponding to $z^Hz$ since $i^2=-1$.
+For real vectors $x$, the inner product is defined as $x^Tx$, which means square of its length. For complex vector $z=1+i$, the length is $\sqrt{1^2+1^2}$, so the inner product for complex vector should be defined as $z^Hz$ because what we want is the coefficient of real and imaginary part, which corresponding to $z^Hz$ due to $i^2=-1$.
 
-So, two complex vectors are perpendicular  if $z^Hz=0$. A complex matrix $M$ is orthonormal(unitary) if $M^H M=MM^H=I$.
+So, two complex vectors are perpendicular  if $z^Hz=0$. A complex matrix $M$ is orthonormal, also called {\bfseries unitary}, if $M^H M=I$($M^H M=I \Leftrightarrow MM^H=I$).
 \\\\Part 2. Fourier matrix
 
 The most famous complex orthogonal matrix is Fourier matrix. It's defined as:
@@ -630,10 +631,122 @@ $ F_4={
 	1&1&1&1\\
 	1&-i&-1&i\\
 	1&-1&1&-1\\
-	1&i&-1&-i
+	1&i&-1&-i \\
 	\end{bmatrix}}$
 \end{center}
 
+			.  	 	
+\\\\Part 3. Discrete Fourier transform(DFT)
+
+Discrete Fourier transform(DFT) is very very important in engineering. Let's see what it is in math form firstly. For Fourier matrix $F$, by decomposing it, we need less calculations to deal with multiplying a matrix $A$ by $F$. The decomposition, for example, 
+\begin{center}
+	$ F_{64}={
+		\begin{bmatrix}
+		I & D \\
+		I & -D
+		\end{bmatrix}}
+		\begin{bmatrix}
+		F_{32} & 0 \\
+		0 & F_{32}
+		\end{bmatrix}
+		P
+	$
+\end{center}
+Here $D$ is a diagonal matrix with $D_{ii}=w^{i}$, where $i$'s index starts from 0. $P$ is a permutation matrix, which is like
+\begin{center}
+	$\begin{bmatrix}
+	1 & 0 & 0 &  0 & 0 & 0 \\
+	0 & 0 & 1 &  0 & 0 & 0 \\
+	0 & 0 & 0 &  0 & 1 & 0 \\
+	0 & 1 & 0 &  0 & 0 & 0 \\
+	0 & 0 & 0 &  1 & 0 & 0 \\
+	0 & 0 & 0 &  0 & 0 & 1 \\
+	\end{bmatrix}$
+\end{center}
+You see that 1s with odd columns always lie in the upper half, 1s with even columns always lie in the lower half. 
+
+When we do $F_{64}A$, we need $64^2$ multiplications. But if we use the decomposition, let's say $F_{64}=BCP$. $P$ is permutation, and permutation has no cost in computer. $B$ is blend of $I$ and $D$, where $I$ part has cost in computer, $D$ part needs $32$ multiplications. The $C$ part needs $2*32^2$ multiplications, but we can also decompose $F_{32}$ in $C$. We can decompose $F$ till we can't. Finally, what we need is just $\frac{n}{2}\log_2 n$ multiplications, instead of the original $n^2$. 
+
+DFT has so many applications in engineering. See section 31 for one of its application, image compression.
+
+\section{}
+Part 1. Why do we care about positive definite matrix?
+
+$x^TAx$ is in quadratic form, like $x_1^2+12x_1x_2+6x_2^2$. We want to find its minimum/maximum, which appears a lot in engineering. We need to find the point $\hat x$ with first order derivative of $x^TAx$ being 0. But if $A$ is not a positive(negative) definite matrix, $\hat x$ is not the minimum/maximum point, but a saddle point. If $A$ is positive definite, $\hat x$ is the minimum/maximum point. So here you can see positive definite matrix is pretty good, and it's closely related to convex optimization.
+\\\\Part 2. Understand positive definite matrix in geometry.
+\\\begin{center}
+\includegraphics[width=0.5\textwidth]{ellipsoid_eigenvalues.png}
+\end{center}
+
+An arbitrarily oriented $n$-dimension ellipsoid $E$, centered at $v$, is defined by the solutions $x$ to the equation $(x-v)^TA(x-v)=1$, where $A$ is a positive definite matrix. What's more, $E$'s axes are in directions of $A$'s eigenvectors, the lengths of axes are $A$'s eigenvalues.
+
+
+\section{}
+Part 1. $A^TA$ is semi-definite
+
+$A^TA$ is symmetric. What's more, it's semi-definite because $x^TA^TAx=(Ax)^TAx=||Ax||^2$.
+\\\\ Part 2. Similar matrix
+
+$A$ and $B$ are similar means, for some $M$, $B=M^{-1}AM$. The reason why we care about similar matrix is that they have the same eigenvalues. 
+
+Proof: $Ax=\lambda x \Rightarrow AMM^{-1}x=\lambda x \Rightarrow M^{-1}AMM^{-1}x=\lambda M^{-1}x \Rightarrow BM^{-1}x=\lambda M^{-1}x \Rightarrow Bx'=\lambda x'$.
+
+
+\section{}
+Part 1.Singular-value decomposition(SVD)
+
+For a matrix $A$, we can find an orthonormal basis $v_1, v_2, \cdots, v_n$ for its row space and an orthonormal basis $u_1, u_2, \cdots, u_n$ for its column space. We can get the connection of $u_i$ and $v_i$ with $Av_i=\sigma_i u_i$, or in matrix form, $AV=U\Sigma$. Since $V$ is orthonormal, $A=U \Sigma V^T$, which is called {\bfseries Singular-value decomposition(SVD)}. We can calculate $U, \Sigma, V$ with(proof below): $U$ is the eigenvector matrix of $AA^T$, $V$ is the eigenvector of $A^TA$, $\Sigma$ is the positive sqrt of eigenvalues of both $A^TA$ and $AA^T$. 
+
+Proof: $A=U \Sigma V^T \Rightarrow A^TA=V\Sigma^T U^TU \Sigma V^T=V(\Sigma^T \Sigma) V^T$. Since $A^TA$ is square symmetric, we know $V(\Sigma^T \Sigma) V^T$ is eigen-decomposition of $A^TA$, where the eigenvectors is orthonormal(22.2.a). So we know $V$ and $\Sigma$ exactly. And get $U$ with $AA^T$ in the same way.
+
+The meaning of $A=U \Sigma V^T$ is as below, where $r$ is $A$'s rank: 
+
+$v_1, v_2, \cdots, v_r$ is the orthonormal basis for $A$'s row space;
+
+$u_1, u_2, \cdots, u_r$ is the orthonormal basis for $A$'s column space; 
+
+$v_r, v_{r+1}, \cdots, v_n$ is the orthonormal basis for $A$'s nullspace; 
+
+$u_r, u_{r+1}, \cdots, u_n$ is the orthonormal basis for $A^T$'s nullspace.
+\\\\ Part 2. Relation and difference between eigen-decomposition and SVD
+
+Relation: You see that when $U=V$, $A=U \Sigma V^T$ becomes eigen-decomposition that $A=U \Sigma U^T$. This happens when $A^TA=AA^T$ from the proof in part1. Matrix $A$ is called {\bfseries normal matrix} if $A^TA=AA^T$ or $A^HA=AA^H$. So SVD is the generalization of the eigen-decomposition of a positive semi-definite normal matrix. 
+
+Difference: The eigenvalue decomposition and SVD differ except for positive semi-definite normal matrices. For further detail, see SVD on wikipedia, section of \textit{Relation to eigenvalue decomposition}.
+
+\section{}
+\hspace*{0.5cm} This section is very simple that the linear transformation can describe phenomenons in real world.
+
+\section{}
+\hspace*{0.5cm} Let's compress an image with JPEG! Say, for a 512*512 gray image, first, divide it by 8*8 blocks. Then each block $b$ is a vector with length of 64, originally described by 64 numbers and standard basis $V$ as $b=\sum b_i v_i$. The standard basis is like $[1, 0, 0]^T, [0, 1, 0]^T, [0, 0, 1]^T$ in three dimension space. To compress the image, we change the basis matrix with Fourier matrix $F$ for each block. Then we present each block as $b=\sum c_i f_i$, further more, we only reserve a little(usually 2 or 3) $c_i$s to approximate $b$. 
+
+1. You see that instead 64 numbers, we now only need a little(2 or 3) numbers to store each block, thus also to the whole image. 
+
+2.  You can also see that the standard basis is not good to reserve only a little $c_i$s in $b=\sum c_i f_i$. That's why we change the basis.
+
+3. Wavelet basis is also used in JPEG-2000, the simplest wavelet basis is like:
+\begin{center}
+	$
+	\begin{bmatrix} 1 \\ 1 \\ 1 \\ 1 \\ 1 \\ 1 \\ 1 \\ 1 \end{bmatrix},
+	\begin{bmatrix} 1 \\ 1 \\ 1 \\ 1 \\ -1 \\ -1 \\ -1 \\ -1 \end{bmatrix},		\begin{bmatrix} 1 \\ 1 \\ -1 \\ -1 \\ 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+	\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \\1 \\ 1 \\ -1 \\ -1 \end{bmatrix},
+	\begin{bmatrix} 1 \\ -1 \\ 0 \\ 0 \\ 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+	\begin{bmatrix} 0 \\ 0 \\ 1 \\ -1 \\ 0 \\ 0 \\ 0 \\ 0 \end{bmatrix},
+	\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \\ 1 \\ -1 \\ 0 \\ 0 \end{bmatrix},
+	\begin{bmatrix} 0 \\ 0 \\ 0 \\ 0 \\ 0 \\ 0 \\ 1 \\ -1 \end{bmatrix},
+	$
+\end{center}
+
+4. Apparently, we want a good basis $P$ to do both decompression $b=Pc$ and compression $c=P^{-1}b$ fast. So you see the wavelet basis in 3 of course is fast in computer, since it only contains $1$ and $-1$. 
+
+The algorithms to change basis with Fourier basis or wavelet basis is called {\bfseries Fast Fourier transform(FFT), Fast wavelet transform(FWT)}. 
+
+5. From 3 and 4, you see that basis is very important. Because basis the path we analyze our data/signal, for example, we can change the basis along time with along frequency, which is core idea of FFT and FWT that makes things easily.
+
+\section{}
+\hspace*{0.5cm} Quiz review.
+
+\section{}
 
 \end{spacing}
 \end{document}
