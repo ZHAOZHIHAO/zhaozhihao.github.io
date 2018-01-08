@@ -1,0 +1,24 @@
+In windows:
+
+Code: http://www.hamedkiani.com/bacf.html
+Paper: http://www.hamedkiani.com/uploads/5/1/8/8/51882963/436.pdf
+Supplementary: http://www.hamedkiani.com/uploads/5/1/8/8/51882963/436_sup.pdf
+
+1. You need to have MATLAB Piotr toolbox:
+   i. Download or clone here: https://github.com/pdollar/toolbox.git
+   ii. In MATLAB command line:
+       addpath(genpath(‘fullpath_to_Piotr_toolbox’)); 
+       savepath; 
+
+2.  You need to get compliled *.mex file again, otherwise the computer can't find some dll files even if there is the dll file in 
+    your computer(I guess this is because the compiled *.mex have the full path of the dll file in its original computer):
+    mex mtimesx.c
+    
+    Note:
+    i. If there is no mex compiler in your computer, download here and install it.
+       https://cn.mathworks.com/matlabcentral/fileexchange/52848-matlab-support-for-mingw-w64-c-c++-compiler
+    ii. If you see other error that MATLAB can't find some dll files caused by *.mexw64(*.mexw32). Recompile the *.mex file with *.c file 
+        first. If this does not work, check whether there is a correct version(x86/x64) dll in your computer.
+        
+3. Run BACF_Demo_single_seq.m for result on OTB bolt sequence.
+   If you want result on more sequences, download OTB100 and run BACF_Demo.m
