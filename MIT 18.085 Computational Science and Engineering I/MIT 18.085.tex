@@ -579,27 +579,96 @@ For example, we let $r=1$. The coefficients are automatically solved since equat
 
 
 
+\section*{30 \& 31.a Discrete Fourier series \& fast Fourier transform(FFT)}
+Part 1. The Discrete Fourier Transform
 
+Discretize Fourier Complex Exponential Series $F(x)=\sum_{k=-\infty}^{\infty}c_k e^{ikx}$ to $f_j=\sum_{k=0}^{N-1}c_kw^{jk}$, where $w$ is $N$th sqrt root of 1($w^N=1$), or in matrix form $f=F_Nc$. The solution of coefficients is discreted to $c_k=\frac{1}{N}\sum_{j=0}^{N-1}f_j\bar w ^{jk}$, or in matrix form $c=F^{-1}_Nf$. From the Fourier matrix below, you can see the first row is all 1 element, so $c_0$ is always $(\sum f_i) / N$.
 
+The Fourier matrix is 
+$$
+F_N =
+\begin{bmatrix}
+1 & 1 & 1 & \cdots & 1\\
+1 & w & w^2 & \cdots & w^{n-1}\\
+1 & w^2 & w^4 & \cdots & w^{2(n-1)}\\
+\vdots &\vdots&  \vdots & \ddots &  \vdots \\
+1 & w^{n-1} & w^{2(n-1)} & \cdots & w^{(n-1)^2}
+\end{bmatrix}
+$$
+where $(F_N)_{ij}=w^{ij}$, indexes of $i, j$ start from 0, since we are in EE area now:)
 
+The Fourier matrix is orthogonal. To check this, note that because we are in complex area now, you show do $a^*b(\bar a^Tb)$ instead of $a^Tb$. And $\hat {F_N}=\frac{1}{\sqrt N}F_N$ is orthonormal. So $F_N^{-1}=\frac{1}{N}F^*$.
+\\\\Part 2. FFT
 
+A FFT algorithm is a method to compute the discrete Fourier transform of a sequence, or its inverse, in which the {\bfseries Cooley–Tukey algorithm} is a famous one. And that's already given in MIT 18.06 section 26 part 3.
 
+\section*{31.b \& 32.a Convolution}
+Part 1.  Convolution and Fourier coefficients
 
+There is a way to introduce convolution from Fourier series. When two Fourier complex series $f(x) = \sum c_k e^{ikx}$ and $g(x) = \sum d_k e^{ikx}$ multiply, what's the Fourier coefficients of the product $f(x)g(x)$? The coefficients come from convolving the vector of $c$'s and the vector of $d$'s, denoted as $c * d$. The coefficients are not $c \odot d$ because when we combine these two Fourier series to just one Fourier series $f(x)g(x) = \sum a_k e^{ikx}$, the $a_k e^{ikx}$ comes from $c_k e^{ik'x}$ and $d_k e^{ik''x}$, where $k = k' + k''$. You know for $k = k' + k''$, there are a lot of combinations. Once you figure out these combinations in formula form, you get the detail(expansion) of $c * d$. The other magical thing is that though $c \odot d$ is not the correct coefficient, it($2\pi c \odot d$) is the correct coefficient of $f(x) * g(x)$ with a factor $2\pi$.
 
+The $n$th component of $c*d$ is $\sum_{k=-\infty}^{\infty}c_kd_{n-k}$. This is easy to understand that $k + (n-k)=n$, where we get the all the possible combinations of $n$.
 
+My understand: Suppose $x$ is an image, $s$ is a filter(e.g, sobel), $x*s$ means that $x$ are (Fourier)coefficient of $X$ and $s$ are coefficient of $S$, $x*s$ is the coefficient of $X\cdot S$. We never see $X, S$ and $X\cdot S$ above though we got $x*s$.
+\\\\ Part 2. Cyclic convolution, convolution and multiplication 
 
+Suppose $f(w)=1+2w+4w^2$, $g(w)=3+5w$ and $w^3=1$, so we have {\bfseries cyclic convolution} with $N=3$. To write $f(w)g(w)$ in $w$, a way we have known is $(1+2w+4w^2)(3+5w)=13+ 26w+27w^2$. The second way, which I think is essentially same as the first way, only deal with the coefficients, is that $c \circledast d = (1, 2, 4) \circledast (3, 0 ,5) = (13, 26, 17)$, where $\circledast$ means cyclic convolution. You can understand the calculation that firstly, the result must be length of 3 because $w^3=1$, secondly the 0th result element comes from (0th, 0th), (1th, 2th) and (2th, 1th) input because $w^3=1$, the rest result elements come from the same way. 
 
+If we do non-cyclic convolution that $c*d$, the result is $(3, 6, 17, 10, 20)$. The  result length is sum of length $c, d$ minus 1, which is not a coincidence, because for $w^0, w^1, w^2$ and $w^0, w^1, w^2$, of course we get $w^0, w^1, w^2, w^3, w^4$. The connection with multiplication is that $(3, 6, 17, 10, 20) \cdot (10^0, 10^1, 10^2, 10^3, 10^4)=421*503$.
+\\\\ Part 3. Cyclic convolution rules
+\\\\ Part 4. Convolution by matrices 
 
+\section*{32.b \& 33.a Filters}
+Filtering (the key step in signal and image processing) is a convolution. For example, a lowpass filter that (second order average) $y_n=\frac{1}{4}x_{n-1} + \frac{2}{4}x_n + \frac{1}{4}x_{n+1}$, and a highpass filter that $D=K/4$, where $K$ is the second order difference matrix. The convolution $y = a * x$ can be written in matrix form $y=Ax$. For example, the lowpass filter can be written as 
+$$
+\begin{bmatrix}
+\cdot \\
+y_0 \\
+y_1 \\
+y_2 \\
+\cdot
+\end{bmatrix}
+=
+\frac{1}{4}
+\begin{bmatrix}
+\cdot & \cdot \\
+1 & 2 & 1 \\
+ & 1 & 2 & 1 \\
+ &   & 1 & 2 & \cdot \\
+ &   &   & \cdot & \cdot 
+\end{bmatrix}
+\begin{bmatrix}
+x_{-1} \\
+x_0 \\
+x_1 \\
+x_2 \\
+\cdot
+\end{bmatrix}
+= Ax 
+= a* x
+$$
+For this lowpass filter, you see that for the input $x_{low}=(., 1, 1, 1, 1, .)$, the output $y$ is the same as input $x$. But for the input $x_{high}=(., 1, -1, 1, -1, .)$, the output $y$ is $(0, 0, 0, 0)$. The low/high in lowpass/highpass means  frequency $\omega$ in $e^{\omega x + \phi}$.
 
+Except allowing the low frequency component, the lowpass filter also remove the noise from the signal, since random noise tends to be high frequency. But filter also blurs significant detail in the input $x$. The big problem of signal processing is to choose the best filter.
 
+In fact, we have a better way that frequency response to analyze all frequencies. For the lowpass filter, the frequency response is 
+\begin{nscenter}
+	$A(\omega)=A(e^{i\omega})=\frac{1}{4}e^{-i\omega} + \frac{2}{4} + \frac{1}{4}e^{iw} = \frac{1}{2}(1+\cos \omega)$
+\end{nscenter}
+So we just insert different frequency to this equation to get corresponding response. For example, $A(0)=1, A(\pi)=0$, which means low pass. All frequency responses are given as below:
+\\\begin{nscenter}
+	\includegraphics[width=0.8\textwidth]{lowpass_and_highpass.png} \\ 
+\end{nscenter}
 
+\section*{33.b \& 34 Fourier Integrals}
+A Fourier series is perfect for a $2\pi$-periodic function. The only frequencies in $\sum c_ke^{ikx}$ are whole numbers $k$. When $f(x)$ is not periodic, all frequencies $k$ are allowed. That sum has to be replaced by an integral $\int_{-\infty }^{\infty}\hat f (k) e^{ikx} dk$. Because the symbol of coefficients $c_k$ changed to $\hat f(k)$, we use the new symbol to get:
 
+i. Transform $f(x)$ to $\hat f(k)$: $\hat f(k)=\int_{-\infty }^{\infty} f (x) e^{-ikx} dx$, which can be get by analogy of $c_k = \frac{1}{2\pi}\int_{-\pi}^{\pi}f(x)e^{-ikx}dx$.
 
+ii. Reconstruction $\hat f (k)$ to $f(x)$: $f(x)=\frac{1}{2\pi}\int_{-\infty }^{\infty}\hat f (k) e^{ikx} dk$, which can be get by analogy of $f(x)=\sum_{k=-\infty}^{\infty}c_ke^{-ikx}$.
 
-
-
-
-
+\section*{35 Deconvolution}
+If we know $G, B$ in $G * U = B$, how to get $U$? This can be done with the idea in part 1 of section 31.b \& 32.a Convolution  that $G *U=B \Rightarrow \hat G \hat U = \hat B \Rightarrow \hat U = \hat B / \hat G$, where hat means that $\hat F = \sum Fe^{ikx}$.
 
 %\\\begin{center}
 %	\includegraphics[width=0.2\textwidth]{Toeplitz_matrix1.png} \\ 
@@ -614,5 +683,7 @@ Function is mapping. Map set $x$ to $y$, and $f$ (in $f(x)$) is the rule to map!
 Functional Analysis
 
 Appro the CNN with a function which can be solved in a sudden. For example, for Lenet, the network is mapping a two-dimension matrix a vector with length 10(0~9). If there exist some basic mapping functions, we can take combinations of them(as f), then approximate the Lenet with f. The approximation process could be easy, we can just compare the output vector, define a loss, then use SGD.
+
+PS1: This method may work if we PS2: This idea should be bad because the kernel is essentially extract appearance feature, and the $(Objs_i)^T(Objs_{i+1})$ is just doing a very simple classification. If we can find a kernel to extract features as cyclic, which don't need to fill the whole cyclic matrix, we can fill the other vectors in the cyclic matrix, for the objects $Objs_i$ in frame $i$ and similar $Objs_{i+1}$, we can just do the association by $(Objs_i)^T(Objs_{i+1})$, which measures the similarity among all objects in frame $i$ and all objects in frame $j$.
 \end{spacing}
 \end{document}
